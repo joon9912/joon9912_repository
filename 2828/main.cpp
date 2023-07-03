@@ -8,7 +8,7 @@ struct basket {
 
 int main() {
     struct basket b;
-    int N, M, J, loc, cur, dist;
+    int N, M, J, loc, dist;
 
     cin >> N >> M;
     cin >> J;
@@ -17,7 +17,6 @@ int main() {
     b.r = M;
 
     dist = 0;
-    cur = 1;
     for (int i = 0; i < J; ++i) {
         cin >> loc;
 
@@ -26,7 +25,7 @@ int main() {
         if (loc > b.r) {
             dist += loc - b.r;
             b.l = (loc - b.r) + b.l;
-            b.r = min(J, N);
+            b.r = loc;
         }
         else if (loc < b.l) {
             dist += b.l - loc;
