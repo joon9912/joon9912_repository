@@ -4,27 +4,35 @@ using namespace std;
 
 int main() {
     string str;
-    int N;
-
+    int N, cnt;
+    char c1, c2;
     cin >> N;
     cin >> str;
 
-    int cnt = 0;
-    char compChar = 'B';
-    bool isCh = false;
+    if (str[0] == 'R') {
+        c1 = 'R';
+        c2 = 'B';
+    }
+    if (str[0] == 'B') {
+        c1 = 'B';
+        c2 = 'R';
+    }
+
+    cnt = 1;
     for (int i = 0; i < N; ++i) {
-        if (str[i] == compChar) {
-            isCh = true;
-            continue;
+        while (i < N && str[i] == c1) {
+            i++;
         }
-        while (i < N && str[i] != compChar) {
+        if (i == N) break;
+
+        while (i < N && str[i] == c2) {
             i++;
         }
         cnt++;
+        if (i == N) break;
     }
 
-    if (isCh) cout << cnt + 1 << endl;
-    else cout << cnt << endl;
+    cout << cnt << endl;
 
     return 0;
 }
