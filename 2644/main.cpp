@@ -3,9 +3,9 @@
 #include <queue>
 using namespace std;
 
-queue<int> q, qq;
-vector<int> v[101];
-bool visited[101];
+queue<int> q;
+int arr[101][101];
+int visited[101];
 
 int main() {
     int n, x, y, m, a, b;
@@ -16,47 +16,28 @@ int main() {
 
     for (int i = 0; i < m; ++i) {
         cin >> x >> y;
-        v[x].push_back(y);
-        v[y].push_back(x);
+        arr[x][y] = 1;
+        arr[y][x] = 1;
     }
 
+    // root is a
     q.push(a);
-    visited[a] = true;
-
-    int level = 1;
     int top = -1;
-    while(!q.empty()) {
-        while (!q.empty()) {
-            top = q.front();
-            q.pop();
-            for (auto e : v[top]) {
-                if (e == b) {
-                    cout << level << endl;
-                    return 0;
-                }
-                if (!visited[e]) {
-                    qq.push(e);
-                    visited[e] = true;
-                }
+    while (!q.empty()) {
+        top = q.front();
+        q.pop();
+        for (int i = 1; i <= n; ++i) {
+            if (arr[top][i] != 0 && !visited[i]) {
+                q.push(i);
+                visited[i] = visited[top] + 1;
             }
         }
-        while (!qq.empty()) {
-            top = qq.front();
-            qq.pop();
-            q.push(top);
-        }
-        level++;
     }
 
-    cout << -1 << endl;
-    /*
-    for (int i = 1; i <= m; ++i) {
-        cout << i << "\n";
-        for (auto e : v[i]) {
-            cout << e << " ";
-        }
-        cout << "\n\n";
-    }
-    */
+    if (visited[b] == 0)
+        cout << -1 << "\n";
+    else
+        cout << visited[b] << "\n";
+
     return 0;
 }
