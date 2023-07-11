@@ -1,0 +1,3 @@
+C:/Users/Administrator/CLionProjects/c_string_ex/cmake-build-debug/CMakeFiles/c_string_ex.dir
+C:/Users/Administrator/CLionProjects/c_string_ex/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Administrator/CLionProjects/c_string_ex/cmake-build-debug/CMakeFiles/rebuild_cache.dir
