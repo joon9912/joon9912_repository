@@ -54,5 +54,9 @@ int main() {
 
     bfs(V); cout << "\n";
 
+    /*for (int i = 1; i <= N; ++i) {
+        cout << i << " : " << visited[i] << "\n";
+    }
+    */
     return 0;
 }
