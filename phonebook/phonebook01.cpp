@@ -25,7 +25,7 @@ int main() {
             find();
         else if (strcmp(command, "delete") == 0)
             remove();
-        else if (strcmp(command, "stauts") == 0)
+        else if (strcmp(command, "status") == 0)
             status();
         else if (strcmp(command, "exit") == 0)
             break;

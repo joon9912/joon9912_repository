@@ -1,0 +1,4 @@
+# ninja log v5
+9	400	7108472404193354	build.ninja	79e428d5cedb2ac0
+1	240	7108472407311803	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
+241	551	7108472410312292	phonebook.exe	d5e4bc41434706dc
