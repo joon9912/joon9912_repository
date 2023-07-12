@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
-project(phonebook)
+project(2309)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(phonebook phonebook.cpp)
+add_executable(2309 main.cpp)
