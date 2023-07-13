@@ -1,18 +1,6 @@
 # ninja log v5
-9	400	7108472404193354	build.ninja	79e428d5cedb2ac0
-1	240	7108472407311803	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-241	551	7108472410312292	phonebook.exe	d5e4bc41434706dc
-2	181	7108473316445558	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-181	448	7108473319060129	phonebook.exe	d5e4bc41434706dc
-2	226	7108480441494256	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-226	527	7108480444381690	phonebook.exe	d5e4bc41434706dc
-2	211	7108481262040295	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-211	495	7108481264761071	phonebook.exe	d5e4bc41434706dc
-3	222	7108484586180305	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-223	533	7108484589185985	phonebook.exe	d5e4bc41434706dc
-2	216	7108487751239569	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-216	531	7108487754271147	phonebook.exe	d5e4bc41434706dc
-2	190	7108488100519451	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
-191	460	7108488103124991	phonebook.exe	d5e4bc41434706dc
+9	400	7109308306009089	build.ninja	79e428d5cedb2ac0
 2	219	7108489643534606	CMakeFiles/phonebook.dir/phonebook01.cpp.obj	abae8be1a17bdc56
 219	528	7108489646451834	phonebook.exe	d5e4bc41434706dc
+1	274	7109356727288469	CMakeFiles/phonebook.dir/phonebook.cpp.obj	ba350baba8c6e454
+276	596	7109356730419127	phonebook.exe	644b3795b2986107

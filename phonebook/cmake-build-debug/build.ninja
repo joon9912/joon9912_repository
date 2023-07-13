@@ -49,8 +49,8 @@ cmake_ninja_workdir = C$:/Users/Administrator/CLionProjects/phonebook/cmake-buil
 
 build cmake_object_order_depends_target_phonebook: phony || CMakeFiles/phonebook.dir
 
-build CMakeFiles/phonebook.dir/phonebook01.cpp.obj: CXX_COMPILER__phonebook_Debug C$:/Users/Administrator/CLionProjects/phonebook/phonebook01.cpp || cmake_object_order_depends_target_phonebook
-  DEP_FILE = CMakeFiles\phonebook.dir\phonebook01.cpp.obj.d
+build CMakeFiles/phonebook.dir/phonebook.cpp.obj: CXX_COMPILER__phonebook_Debug C$:/Users/Administrator/CLionProjects/phonebook/phonebook.cpp || cmake_object_order_depends_target_phonebook
+  DEP_FILE = CMakeFiles\phonebook.dir\phonebook.cpp.obj.d
   FLAGS = -g
   OBJECT_DIR = CMakeFiles\phonebook.dir
   OBJECT_FILE_DIR = CMakeFiles\phonebook.dir
@@ -63,7 +63,7 @@ build CMakeFiles/phonebook.dir/phonebook01.cpp.obj: CXX_COMPILER__phonebook_Debu
 #############################################
 # Link the executable phonebook.exe
 
-build phonebook.exe: CXX_EXECUTABLE_LINKER__phonebook_Debug CMakeFiles/phonebook.dir/phonebook01.cpp.obj
+build phonebook.exe: CXX_EXECUTABLE_LINKER__phonebook_Debug CMakeFiles/phonebook.dir/phonebook.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\phonebook.dir
