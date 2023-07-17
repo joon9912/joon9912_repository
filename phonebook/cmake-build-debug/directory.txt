@@ -1,4 +1,4 @@
-David 0517778888
-Henry 0243737788
-John 010345232374
-Sean 34527354
+David#0517778888# #Friend#
+Henry#0243737788# #hebry@gmail.com#
+John#01098765432#john1234@gmail.com#colleague#
+Sean#01034527354#sean@naver.com#colleague#
