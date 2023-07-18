@@ -1,4 +1,4 @@
-David#0517778888# #Friend#
-Henry#0243737788# #hebry@gmail.com#
+David#0517778888#(null)#Friend#
+Henry#0243737788#(null)#hebry@gmail.com#
 John#01098765432#john1234@gmail.com#colleague#
-Sean#01034527354#sean@naver.com#colleague#
+Kim#01054321234#Kim@naver.com#Friend#
