@@ -22,11 +22,12 @@ typedef struct polynomial {
 Polynomial *polys[MAX_POLYS];
 int n = 0; // # of polys
 
+void process_command();
+
 int main() {
     // coefficient  : integer
     // exponent     : positive integer
-
-
+    process_command();
     return 0;
 }
 
@@ -115,22 +116,49 @@ int eval(Polynomial *poly, int x) {
 }
 
 void print_term(Term *pTerm) {
-    if (pTerm->expo >= 2)
-        printf("%dx^%d", pTerm->coef, pTerm->expo);
-    else if (pTerm->expo == 1)
-        printf("%dx", pTerm->coef);
-    else
-        printf("%d", pTerm->coef);
+    if (pTerm->coef == 1) {
+        if (pTerm->expo >= 2)
+            printf("x^%d", pTerm->expo);
+        else if (pTerm->expo == 1)
+            printf("x");
+        else
+            printf("1");
+    }
+    else if (pTerm->coef == -1) {
+        if (pTerm->expo >= 2)
+            printf("-x^%d", pTerm->expo);
+        else if (pTerm->expo == 1)
+            printf("-x");
+        else
+            printf("-1");
+    }
+    else {
+        if (pTerm->expo >= 2)
+            printf("%dx^%d", pTerm->coef, pTerm->expo);
+        else if (pTerm->expo == 1)
+            printf("%dx", pTerm->coef);
+        else
+            printf("-%d", pTerm->coef);
+    }
+
 }
 
 void print_poly(Polynomial *p) {
-    printf("%c-", p->name);
+    printf("%c=", p->name);
     Term *t = p->first;
-    while (t != NULL) {
+    if (p->size == 1) {
         print_term(t);
-        printf("+");
-        t = t->next;
+        printf("\n");
+        return;
     }
+    for (int i = 0; i < p->size - 1; ++i) {
+        print_term(t);
+        t = t->next;
+        if (t->coef > 0)
+            printf("+");
+    }
+    print_term(t);
+    printf("\n");
 }
 
 void handle_print(char name) {
@@ -146,7 +174,20 @@ void handle_print(char name) {
 }
 
 void handle_calc(char name, char *x_str) {
+    int i;
+    for (i = 0; i < n; ++i) {
+        if (polys[i]->name == name)
+            break;
+    }
 
+    if (i == n) return;
+
+    int j = 0, res = 0;
+    while (j < strlen(x_str) && x_str[i] >= '0' && x_str[i] <= '9') {
+        res = res * 10 + (int)(x_str[i] - '0');
+        j++;
+    }
+    printf("%d\n", eval(polys[i], res));
 }
 
 void erase_blanks(char *expression) {
@@ -161,6 +202,81 @@ void erase_blanks(char *expression) {
     strcpy(expression, str);
 }
 
+int parse_and_add_term(char *expr, int begin, int end, Polynomial *p_poly) {
+    int i = begin;
+    int sign_coef = 1, coef = 0, expo = 1;
+
+    if (expr[i] == '+')
+        i++;
+    else if (expr[i] == '-') {
+        sign_coef = -1;
+        i++;
+    }
+
+    while (i < end && expr[i] >= '0' && expr[i] <= '9') {
+        coef = coef * 10 + (int)(expr[i] - '0');
+        i++;
+    }
+
+    if (coef == 0) // ex) x^1, -x^3
+        coef = sign_coef;
+    else
+        coef *= sign_coef;
+
+    if (i >= end) { // constant
+        add_term(coef, 0, p_poly);
+        return 1;
+    }
+
+    if (expr[i] != 'x')
+        return 0;
+    i++;
+
+    if (i >= end) { // ex) x^1 => x
+        add_term(coef, 1, p_poly);
+        return 1;
+    }
+
+    if (expr[i] != '^')
+        return 0;
+    i++;
+
+    expo = 0;
+    while (i < end && expr[i] >= '0' && expr[i] <= '9') {
+        expo = expo * 10 + (int)(expr[i] - '0');
+        i++;
+    }
+
+    add_term(coef, expo, p_poly);
+
+    return 1;
+}
+
+void destroy_polynomial(Polynomial *ptr_poly) {
+    if (ptr_poly == NULL)
+        return;
+    Term *t = ptr_poly->first, *tmp;
+    while (t != NULL) {
+        tmp = t;
+        t = t->next;
+        free(tmp);
+    }
+    free(ptr_poly);
+}
+
+void insert_polynomial(Polynomial *ptr_poly) {
+    for (int i = 0; i < n; ++i) {
+        // if have same poly
+        if (polys[i]->name == ptr_poly->name) {
+            destroy_polynomial(polys[i]);
+            polys[i] = ptr_poly;
+            return;
+        }
+    }
+    // if not have same name poly
+    polys[n++] = ptr_poly;
+}
+
 Polynomial *create_by_parse_polynomial(char name, char *body) {
     Polynomial *ptr_poly = create_polynomial_instance(name);
 
@@ -169,10 +285,10 @@ Polynomial *create_by_parse_polynomial(char name, char *body) {
         if (body[i] == '+' || body[i] == '-')
             i++;
 
-        while (i < strlen(body) && body[i] != '+'
-            && body[i] != '-')
-        { i++; }
+        while (i < strlen(body) && body[i] != '+' && body[i] != '-')
+            i++;
 
+        // [begin_term, i) == term
         int result = parse_and_add_term(body, begin_term, i , ptr_poly);
 
         if (result == 0) {
@@ -182,6 +298,44 @@ Polynomial *create_by_parse_polynomial(char name, char *body) {
         begin_term = i;
     }
     return ptr_poly;
+}
+
+Polynomial *create_by_add_two_polynomials(char name, char f, char g) {
+    Polynomial *ptr_poly = create_polynomial_instance(name);
+
+    int x = -1, y = -1;
+    for (int i = 0; i < n; ++i) {
+        if (polys[i]->name == f || polys[i]->name == g) {
+            if (x == -1) x = i;
+            else if (y == -1) y = i;
+        }
+    }
+
+    if (x == -1 || y == -1) return NULL;
+
+    Term *t = polys[x]->first, *tmp;
+    while (t != NULL) {
+        tmp = t;
+        t = t->next;
+        add_term(tmp->coef, tmp->expo, ptr_poly);
+    }
+    // print_poly(ptr_poly);
+
+    t = polys[y]->first;
+    while (t != NULL) {
+        tmp = t;
+        t = t->next;
+        add_term(tmp->coef, tmp->expo, ptr_poly);
+    }
+    // print_poly(ptr_poly);
+
+    return ptr_poly;
+}
+
+void show_all() {
+    for (int i = 0; i < n; ++i) {
+        handle_print(polys[i]->name);
+    }
 }
 
 void handle_definition(char *expression) {
@@ -200,7 +354,7 @@ void handle_definition(char *expression) {
     }
 
     if (exp_body[0] >= 'a' && exp_body[0] <= 'z' && exp_body[0] != 'x') {
-       char *former = strtok(exp_body, "+");
+        char *former = strtok(exp_body, "+");
         if (former == NULL || strlen(former) != 1) {
             printf("Invalid expression format.");
             return;
@@ -210,13 +364,15 @@ void handle_definition(char *expression) {
             printf("Invalid expression format.");
             return;
         }
-        Polynomial *pol = create_by_add_two_polynomias(f_name[0], former[0], later[0]);
+        Polynomial *pol = create_by_add_two_polynomials(f_name[0], former[0], later[0]);
 
         if (pol == NULL) {
             printf("Invalid expression format.");
             return;
         }
         insert_polynomial(pol);
+
+        // print_poly(pol);
     }
     else {
         Polynomial *pol = create_by_parse_polynomial(f_name[0], exp_body);
@@ -226,6 +382,8 @@ void handle_definition(char *expression) {
         }
         insert_polynomial(pol);
     }
+
+    // show_all();
 }
 
 void process_command() {
@@ -262,6 +420,8 @@ void process_command() {
         }
         else if (strcmp(command, "exit") == 0)
             break;
+        else if (strcmp(command, "show") == 0)
+            show_all();
         else
             handle_definition(copied); // read poly
     }
