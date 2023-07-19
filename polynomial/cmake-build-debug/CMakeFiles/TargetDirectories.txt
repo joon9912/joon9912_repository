@@ -1,0 +1,3 @@
+C:/Users/Administrator/CLionProjects/polynomial/cmake-build-debug/CMakeFiles/polynomial.dir
+C:/Users/Administrator/CLionProjects/polynomial/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Administrator/CLionProjects/polynomial/cmake-build-debug/CMakeFiles/rebuild_cache.dir
