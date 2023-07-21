@@ -11,12 +11,12 @@ typedef struct ArrayStack {
     int* arr;
 } Stack;
 
-Stack* operand_stack;
+Stack *operand_stack;
 Stack *operator_stack;
 
 void free_stack(Stack *stack) {
     free(stack->arr);
-    free(operand_stack);
+    free(stack);
 }
 
 Stack *createStack(int capacity) {
@@ -137,12 +137,14 @@ char *process_op(char op, char *pos) {
                 if (!isEmpty(operator_stack))
                     top_op = (char)peek(operator_stack);
             }
+            push(operator_stack, op);
         }
-        return pos;
     }
+    return pos;
 }
+
 char *convert(char *infix) {
-    char *postfix = (char *) malloc(strlen(infix) + 1);
+    char *postfix = (char *)malloc(strlen(infix) + 1);
     char *pos = postfix;
 
     char *token = strtok(infix, " ");
@@ -151,10 +153,11 @@ char *convert(char *infix) {
             // operand
             sprintf(pos, "%s ", token);
             pos += (strlen(token) + 1);
-        } else if (is_operator(token[0]) > -1) // operator
+        }
+        else if (is_operator(token[0]) > -1) // operator
             pos = process_op(token[0], pos);
         else
-            handle_exception("Syntax Error : Invalid characeer encotuntered.");
+            handle_exception("Syntax Error : Invalid character encotuntered.");
         token = strtok(NULL, " ");
     }
 
@@ -167,14 +170,28 @@ char *convert(char *infix) {
     return postfix;
 }
 
+int read_line(FILE *fp, char str[], int limit) {
+    int ch, i = 0;
+
+    while ((ch = fgetc(fp)) != '\n' && ch != EOF)
+        if (i < limit - 1)
+            str[i++] = ch;
+
+    str[i] = '\0';
+    return i;
+}
+
 int main() {
     int size = 100;
     char str[size];
     operand_stack = createStack(size);
     operator_stack = createStack(size);
 
-    fgets(str, size, stdin);
-    printf("%d\n", eval(str));
+    // read_line(stdin, str, size);
+    // printf("%d\n", eval(str));
+
+    read_line(stdin, str, size);
+    printf("%s\n", convert(str));
 
     free_stack(operand_stack);
     free_stack(operator_stack);
