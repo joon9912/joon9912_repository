@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char OPERATORS[] = "+-*/";
-static int PRECEDENCE[] {1, 1, 2, 2};
+#define SIZE 100
+
+static char OPERATORS[] = "+-*/()";
+static int PRECEDENCE[] {1, 1, 2, 2, -1, -1};
 
 typedef struct ArrayStack {
     int top;
@@ -13,6 +15,13 @@ typedef struct ArrayStack {
 
 Stack *operand_stack;
 Stack *operator_stack;
+
+Stack *createStack(int capacoty);
+
+void init() {
+    operand_stack = createStack(SIZE);
+    operator_stack = createStack(SIZE);
+}
 
 void free_stack(Stack *stack) {
     free(stack->arr);
@@ -123,7 +132,7 @@ int precedence(char op) {
 }
 
 char *process_op(char op, char *pos) {
-    if (isEmpty(operator_stack))
+    if (isEmpty(operator_stack) || op == '(')
         push(operator_stack, op);
     else {
         char top_op = peek(operator_stack);
@@ -132,12 +141,15 @@ char *process_op(char op, char *pos) {
         else {
             while (!isEmpty(operator_stack) && precedence(op) <= precedence(top_op)) {
                 pop(operator_stack);
+                if (top_op == '(') // op == ')' cuz pre == pre
+                    break;
                 sprintf(pos, "%c ", top_op);
                 pos += 2;
                 if (!isEmpty(operator_stack))
                     top_op = (char)peek(operator_stack);
             }
-            push(operator_stack, op);
+            if (op != ')')
+                push(operator_stack, op);
         }
     }
     return pos;
@@ -163,6 +175,8 @@ char *convert(char *infix) {
 
     while (!isEmpty(operator_stack)) {
         char op = (char)pop(operator_stack);
+        if (op == '(')
+            handle_exception("Unmatched parenthesis.");
         sprintf(pos, "%c ", op);
         pos += 2;
     }
@@ -182,15 +196,20 @@ int read_line(FILE *fp, char str[], int limit) {
 }
 
 int main() {
-    int size = 100;
-    char str[size];
-    operand_stack = createStack(size);
-    operator_stack = createStack(size);
+    // limit of this program
+    // operand >= 0 not in operand < 0 or real number
+    // unary ex) -(-2)
+    // all tokens should be distinguished by space
+    // 2^3^4^... : right associativity
+
+    char str[SIZE];
+
+    init();
 
     // read_line(stdin, str, size);
     // printf("%d\n", eval(str));
 
-    read_line(stdin, str, size);
+    read_line(stdin, str, SIZE);
     printf("%s\n", convert(str));
 
     free_stack(operand_stack);
