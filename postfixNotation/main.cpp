@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+static char OPERATORS[] = "+-*/";
+
+typedef struct ArrayStack {
+    int top;
+    int capacity;
+    int* arr;
+} Stack;
+
+Stack* operand_stack;
+
+void free_stack(Stack *stack) {
+    free(stack->arr);
+}
+
+Stack *createStack(int capacity) {
+    Stack *stack = (Stack*)malloc(sizeof(Stack));
+    if (!stack) return NULL;
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->arr = (int*)malloc(stack->capacity * sizeof(int));
+
+    return stack;
+}
+
+int isEmpty(Stack *stack) {
+    return stack->top == -1;
+}
+
+int isFull(Stack *stack) {
+    return stack->top == stack->capacity - 1;
+}
+
+int peek(Stack *stack) {
+    // top()
+    if (isEmpty(stack))
+        return -1;
+    return stack->arr[stack->top];
+}
+
+void push(Stack *stack, int data) {
+    if (isFull(stack))
+        printf("Stack is Full\n");
+    else {
+        stack->arr[++stack->top] = data;
+        // printf("%d pushed to stack\n", data);
+    }
+}
+
+int pop(Stack *stack) {
+    if (isEmpty(stack))
+        return -1;
+    else
+        return stack->arr[stack->top--];
+}
+
+int is_operator(char ch) {
+    for (int i = 0 ; i < strlen(OPERATORS); ++i)
+        if (OPERATORS[i] == ch)
+            return i;
+    return -1;
+}
+
+void handle_exception(const char *err_msg) {
+    printf("%s\n", err_msg);
+    exit(1);
+}
+
+int eval_op(char op) {
+    if (isEmpty(operand_stack))
+        handle_exception("Syntax Error : Stack empty in eval_op.");
+    int rhs = pop(operand_stack);
+    if (isEmpty(operand_stack))
+        handle_exception("Syntax Error : Stack empty in eval_op.");
+    int lhs = pop(operand_stack);
+    int result = 0;
+    switch (op) {
+        case '+': result = lhs + rhs; break;
+        case '-': result = lhs - rhs; break;
+        case '*': result = lhs * rhs; break;
+        case '/': result = lhs / rhs; break;
+    }
+    return result;
+}
+int eval(char *expr) {
+    char *token = strtok(expr, " ");
+    while (token != NULL) {
+        if (token[0] >= '0' && token[0] <= '9') {
+            // operand
+            int value = atoi(token);
+            push(operand_stack, value);
+        }
+        else if (is_operator(token[0]) > -1) {
+            // operator
+            int result = eval_op(token[0]);
+            push(operand_stack, result);
+        }
+        else {
+            handle_exception("Syntax Error : invalid character encountered.");
+        }
+        token = strtok(NULL, " ");
+    }
+    if (isEmpty(operand_stack))
+        handle_exception("Syntax Error : Stack empty in eval_op.");
+    int answer = pop(operand_stack);
+    if (isEmpty(operand_stack))
+        return answer;
+    else {
+        handle_exception("Syntax Error : Stack should be empty.");
+        return -1;
+    }
+}
+
+int main() {
+    int size = 100;
+    char str[size];
+    operand_stack = createStack(size);
+
+    fgets(str, size, stdin);
+    printf("%d\n", eval(str));
+
+    free_stack(operand_stack);
+    return 0;
+}

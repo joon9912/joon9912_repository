@@ -1,0 +1,21 @@
+# ninja log v5
+1	318	7116085669671382	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+321	673	7116085673077401	postfixNotation.exe	99dbbc23634355fc
+4	276	7116086061906806	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+277	710	7116086066179153	postfixNotation.exe	99dbbc23634355fc
+4	221	7116086466056344	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+222	490	7116086468642402	postfixNotation.exe	99dbbc23634355fc
+4	218	7116087539542826	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+219	508	7116087542362289	postfixNotation.exe	99dbbc23634355fc
+3	222	7116087685203816	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+224	488	7116087687771032	postfixNotation.exe	99dbbc23634355fc
+3	239	7116088168217558	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+239	535	7116088171043630	postfixNotation.exe	99dbbc23634355fc
+4	227	7116089915001173	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+228	503	7116089917671998	postfixNotation.exe	99dbbc23634355fc
+4	289	7116090877445176	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+289	589	7116090880341674	postfixNotation.exe	99dbbc23634355fc
+3	222	7116091547111798	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+222	505	7116091549883457	postfixNotation.exe	99dbbc23634355fc
+3	227	7116091769745216	CMakeFiles/postfixNotation.dir/main.cpp.obj	84b51f4581dd63e1
+227	515	7116091772534338	postfixNotation.exe	99dbbc23634355fc
