@@ -3,6 +3,7 @@
 #include <string.h>
 
 static char OPERATORS[] = "+-*/";
+static int PRECEDENCE[] {1, 1, 2, 2};
 
 typedef struct ArrayStack {
     int top;
@@ -11,9 +12,11 @@ typedef struct ArrayStack {
 } Stack;
 
 Stack* operand_stack;
+Stack *operator_stack;
 
 void free_stack(Stack *stack) {
     free(stack->arr);
+    free(operand_stack);
 }
 
 Stack *createStack(int capacity) {
@@ -85,6 +88,7 @@ int eval_op(char op) {
     }
     return result;
 }
+
 int eval(char *expr) {
     char *token = strtok(expr, " ");
     while (token != NULL) {
@@ -114,14 +118,66 @@ int eval(char *expr) {
     }
 }
 
+int precedence(char op) {
+    return PRECEDENCE[is_operator(op)];
+}
+
+char *process_op(char op, char *pos) {
+    if (isEmpty(operator_stack))
+        push(operator_stack, op);
+    else {
+        char top_op = peek(operator_stack);
+        if (precedence(op) > precedence(top_op))
+            push(operator_stack, op);
+        else {
+            while (!isEmpty(operator_stack) && precedence(op) <= precedence(top_op)) {
+                pop(operator_stack);
+                sprintf(pos, "%c ", top_op);
+                pos += 2;
+                if (!isEmpty(operator_stack))
+                    top_op = (char)peek(operator_stack);
+            }
+        }
+        return pos;
+    }
+}
+char *convert(char *infix) {
+    char *postfix = (char *) malloc(strlen(infix) + 1);
+    char *pos = postfix;
+
+    char *token = strtok(infix, " ");
+    while (token != NULL) {
+        if (token[0] >= '0' && token[0] <= '9') {
+            // operand
+            sprintf(pos, "%s ", token);
+            pos += (strlen(token) + 1);
+        } else if (is_operator(token[0]) > -1) // operator
+            pos = process_op(token[0], pos);
+        else
+            handle_exception("Syntax Error : Invalid characeer encotuntered.");
+        token = strtok(NULL, " ");
+    }
+
+    while (!isEmpty(operator_stack)) {
+        char op = (char)pop(operator_stack);
+        sprintf(pos, "%c ", op);
+        pos += 2;
+    }
+    *pos = '\0';
+    return postfix;
+}
+
 int main() {
     int size = 100;
     char str[size];
     operand_stack = createStack(size);
+    operator_stack = createStack(size);
 
     fgets(str, size, stdin);
     printf("%d\n", eval(str));
 
     free_stack(operand_stack);
+    free_stack(operator_stack);
+
     return 0;
 }
