@@ -1,0 +1,3 @@
+C:/Users/Administrator/CLionProjects/MST/cmake-build-debug/CMakeFiles/MST.dir
+C:/Users/Administrator/CLionProjects/MST/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Administrator/CLionProjects/MST/cmake-build-debug/CMakeFiles/rebuild_cache.dir
