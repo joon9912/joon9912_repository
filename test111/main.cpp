@@ -1,32 +1,26 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-class Oval {
-    int width, height;
-    double getArea();
-public:
-    Oval() { width = height = 1; }
-    Oval(int w, int h) { width = w, height = h; }
-    int getWidth() { return width; }
-    int getHeight() { return height; }
-    void set(int w, int h);
-    void show();
-};
-
-double Oval::getArea() {
-    return 3.14 * width * height;
-}
-
-void Oval::set(int w, int h) {
-    width = w, height = h;
-}
-
-void Oval::show() {
-    cout << "width = " << width << ", " << "height = " << height << ", " << "Area = " << getArea() << endl;
-}
+int T;
+vector<int> v;
 
 int main() {
-    Oval a, b(3, 4);
-    a.set(10, 20);
-    a.show(); b.show();
+    int n;
+    cin >> T;
+
+    for (int i = 0; i < T; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            cin >> n;
+            v.push_back(n);
+        }
+        sort(v.begin(), v.end());
+
+        cout << v[7] << endl;
+
+        v.clear();
+    }
+
+    return 0;
 }
