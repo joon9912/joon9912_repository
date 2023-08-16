@@ -1,10 +1,8 @@
 #include <iostream>
 #include <string>
 #include <stack>
-#include <queue>
 using namespace std;
 
-// queue<int> q;
 stack<string> st;
 string str;
 long long sum;
