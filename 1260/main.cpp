@@ -1,62 +1,72 @@
 #include <iostream>
+#include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
-int N, M, V, x, y;
-int arr[1001][1001];
+int N, M, V;
+vector<int> v[1001];
 int visited[1001];
-queue<int> q;
+
+void clear_visited() {
+    for (int i = 0; i <= 1000; ++i)
+        visited[i] = 0;
+}
 
 void dfs(int x) {
     cout << x << " ";
     visited[x] = 1;
-    for (int i = 1; i <= N; ++i) {
-        if (arr[x][i] && !visited[i])
-            dfs(i);
+
+    for (auto e : v[x]) {
+        if (!visited[e]) {
+            visited[e] = 1;
+            dfs(e);
+        }
     }
 }
 
 void bfs(int x) {
+    queue<int> q;
+
     q.push(x);
     visited[x] = 1;
-    cout << x << " ";
     while (!q.empty()) {
-        int top = q.front();
+        int a = q.front();
         q.pop();
 
-        for (int i = 1; i <= N; ++i) {
-            if (arr[top][i] && !visited[i]) {
-                cout << i << " ";
-                q.push(i);
-                visited[i] = visited[top] + 1; // visited #
+        cout << a << " ";
+
+        for (auto e : v[a]) {
+            if (!visited[e]) {
+                q.push(e);
+                visited[e] = 1;
             }
         }
     }
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
-
     cin >> N >> M >> V;
 
+    int x, y;
     for (int i = 0; i < M; ++i) {
         cin >> x >> y;
 
-        arr[x][y] = 1;
-        arr[y][x] = 1;
+        v[x].push_back(y);
+        v[y].push_back(x);
     }
 
-    dfs(V); cout << "\n";
-
-    for (int i = 1; i <= N; ++i)
-        visited[i] = 0;
-
-    bfs(V); cout << "\n";
-
-    /*for (int i = 1; i <= N; ++i) {
-        cout << i << " : " << visited[i] << "\n";
+    for (int i = 1; i <= N; ++i) {
+        sort(v[i].begin(), v[i].end());
     }
-    */
+
+    dfs(V);
+    cout << "\n";
+
+    clear_visited();
+
+    bfs(V);
+    cout << "\n";
+
     return 0;
 }
